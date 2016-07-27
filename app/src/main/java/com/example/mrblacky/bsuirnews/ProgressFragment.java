@@ -3,8 +3,12 @@ package com.example.mrblacky.bsuirnews;
 /**
  * Created by Mr.Blacky on 25.07.2016.
  */
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +25,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ProgressFragment extends Fragment {
 
-    TextView contentView;
-    String contentText = null;
+    private List<Element> news;
+    private RecyclerView rv;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +44,15 @@ public class ProgressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_progress, container, false);
-        contentView = (TextView) view.findViewById(R.id.content);
-        if(contentText!=null)
-            contentView.setText(contentText);
+
+        rv=(RecyclerView)view.findViewById(R.id.rv);
+
+        LinearLayoutManager llm = new LinearLayoutManager(inflater.getContext());
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
+        //contentView = (TextView) view.findViewById(R.id.content);
+        //if(contentText!=null)
+         //   contentView.setText(contentText);
         return view;
     }
 
@@ -48,21 +60,22 @@ public class ProgressFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(contentText==null)
+        if(news==null)
             new ProgressTask().execute();
     }
 
-    class ProgressTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... path) {
+    class ProgressTask extends AsyncTask<String, Void, ArrayList<Element>> {
 
-            String content;
+        @Override
+        protected ArrayList<Element> doInBackground(String... path) {
+
+            ArrayList<Element> content = null;
             try{
 
                 content = getContent("http://bsuir.by");
             }
             catch (IOException ex){
-                content = ex.getMessage();
+                Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             return content;
@@ -70,15 +83,18 @@ public class ProgressFragment extends Fragment {
         @Override
         protected void onProgressUpdate(Void... items) {
         }
-        @Override
-        protected void onPostExecute(String content) {
 
-            contentText=content;
-            contentView.setText(content);
+        @Override
+        protected void onPostExecute(ArrayList<Element> content) {
+
+            RVAdapter adapter = new RVAdapter(content);
+            rv.setAdapter(adapter);
+           // contentText=content;
+           // contentView.setText(content);
             Toast.makeText(getActivity(), "Данные загружены", Toast.LENGTH_SHORT).show();
         }
 
-        private String getContent(String path) throws IOException {
+        private ArrayList<Element> getContent(String path) throws IOException {
             BufferedReader reader=null;
             try {
                 URL url=new URL(path);
@@ -97,10 +113,14 @@ public class ProgressFragment extends Fragment {
                 elements = findElements(buf.toString());
                 if (elements.size()== 0 )
                 {
-                    return ("Отсутствуют необходимые данные");
+                    return null;
                 }
-                
-                StringBuilder returned = new StringBuilder();
+                else
+                {
+                    return elements;
+                }
+
+                /*StringBuilder returned = new StringBuilder();
                 for (int i = 0; i < elements.size(); i++){
                     returned.append(i+"\n");
                     returned.append(elements.get(i).getHref()+"\n");
@@ -110,18 +130,13 @@ public class ProgressFragment extends Fragment {
                     returned.append(elements.get(i).getTheme()+"\n");
                 }
 
-                return(returned.toString());
+                return(returned.toString());*/
             }
             finally {
                 if (reader != null) {
                     reader.close();
                 }
             }
-        }
-
-        private String convertStreamToString(java.io.InputStream is) {
-            java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-            return s.hasNext() ? s.next() : "";
         }
 
         private  ArrayList findElements(String text){
@@ -145,8 +160,23 @@ public class ProgressFragment extends Fragment {
                 Matcher matcherTheme = patternTheme.matcher(whatWeFind);
 
                 if (matcherHref.find() && matcherSrc.find() && matcherAlt.find() && matcherDate.find() && matcherTheme.find()){
-                    result.add(new Element(matcherHref.group().substring(6), matcherSrc.group().substring(5), matcherAlt.group().substring(5),
-                            matcherDate.group().substring(6), matcherTheme.group().substring(28)));
+
+
+                    StringBuilder href = new StringBuilder();
+                    href.append(" http://bsuir.by");
+                    href.append( matcherSrc.group().substring(5));
+                    Bitmap Icon = null;
+                    try {
+                        URL newurl = new URL(href.toString());
+                        Icon = BitmapFactory.decodeStream(newurl.openConnection() .getInputStream());
+
+                    } catch (Exception e) {
+
+                    }
+                    Element temp = new Element(matcherHref.group().substring(6), matcherSrc.group().substring(5), matcherAlt.group().substring(5),
+                            matcherDate.group().substring(6), matcherTheme.group().substring(28));
+                    temp.setImage(Icon);
+                    result.add(temp);
                 }
             }
             return result;
