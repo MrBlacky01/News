@@ -1,5 +1,7 @@
 package com.example.mrblacky.bsuirnews;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Mr.Blacky on 25.07.2016.
  */
@@ -9,6 +11,7 @@ public class Element {
     private String alt;
     private String date;
     private String theme;
+    private Bitmap image;
 
     Element(){
         href = "null";
@@ -43,6 +46,10 @@ public class Element {
     {
         return  theme;
     }
+    Bitmap getImage()
+    {
+        return image;
+    }
 
     void setHref(String h){
         href = h;
@@ -60,5 +67,9 @@ public class Element {
     void setTheme(String t)
     {
         theme = t;
+    }
+    void setImage(Bitmap p)
+    {
+        image = p;
     }
 }
