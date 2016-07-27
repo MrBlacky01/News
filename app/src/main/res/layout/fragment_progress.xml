@@ -4,15 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <TextView android:id="@+id/content"
+        android:text="@string/downloading_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-        <TextView android:id="@+id/content"
-            android:text="Загрузка данных...."
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <android.support.v7.widget.RecyclerView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/rv"
+        >
 
-    </ScrollView>
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
