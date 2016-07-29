@@ -11,7 +11,6 @@ public class Element {
     private String alt;
     private String date;
     private String theme;
-    private Bitmap image;
 
     Element(){
         href = "null";
@@ -46,10 +45,6 @@ public class Element {
     {
         return  theme;
     }
-    Bitmap getImage()
-    {
-        return image;
-    }
 
     void setHref(String h){
         href = h;
@@ -68,8 +63,5 @@ public class Element {
     {
         theme = t;
     }
-    void setImage(Bitmap p)
-    {
-        image = p;
-    }
+
 }
