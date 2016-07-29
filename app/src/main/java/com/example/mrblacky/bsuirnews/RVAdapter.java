@@ -4,6 +4,7 @@ package com.example.mrblacky.bsuirnews;
  * Created by Mr.Blacky on 27.07.2016.
  */
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,12 +13,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder> {
 
@@ -28,6 +34,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
         TextView newsName;
         TextView newsTag;
         ImageView newsPhoto;
+        String href;
 
         ElementViewHolder(View itemView) {
             super(itemView);
@@ -38,10 +45,22 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
             newsTag = (TextView)itemView.findViewById(R.id.news_tag);
             newsPhoto = (ImageView)itemView.findViewById(R.id.news_photo);
 
+            cv.setOnClickListener(new View.OnClickListener() {
+
+                @Override public void onClick(View v) {
+                    //...
+                    Toast.makeText(v.getContext(), href, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(v.getContext(), WebResourse.class);
+                    intent.putExtra("HrefValue","http://bsuir.by"+href);
+                    v.getContext().startActivity(intent);
+
+                }
+            });
         }
     }
 
     List<Element> news;
+    AdapterView.OnItemClickListener mItemClickListener;
 
     RVAdapter(List<Element> news){
         this.news = news;
@@ -66,7 +85,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
         elementViewHolder.newsTag.setText(news.get(i).getTheme());
        // elementViewHolder.newsPhoto.setImageResource(R.mipmap.ic_launcher);
 
-        elementViewHolder.newsPhoto.setImageBitmap(news.get(i).getImage());
+        try {
+            Picasso.with(elementViewHolder.newsPhoto.getContext()).load("http://bsuir.by"+news.get(i).getSrc()).into(elementViewHolder.newsPhoto);
+        }
+        catch (Exception exept)
+        {
+
+        }
+        elementViewHolder.href=news.get(i).getHref();
+        //elementViewHolder.newsPhoto.setImageBitmap(news.get(i).getImage());
     }
 
     @Override

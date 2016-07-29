@@ -3,8 +3,11 @@ package com.example.mrblacky.bsuirnews;
 /**
  * Created by Mr.Blacky on 25.07.2016.
  */
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,6 +41,8 @@ public class ProgressFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+
     }
 
     @Override
@@ -56,12 +61,17 @@ public class ProgressFragment extends Fragment {
         return view;
     }
 
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(news==null)
-            new ProgressTask().execute();
+        if(this.news==null) {
+                new ProgressTask().execute();
+
+        }
+
     }
 
     class ProgressTask extends AsyncTask<String, Void, ArrayList<Element>> {
@@ -120,17 +130,11 @@ public class ProgressFragment extends Fragment {
                     return elements;
                 }
 
-                /*StringBuilder returned = new StringBuilder();
-                for (int i = 0; i < elements.size(); i++){
-                    returned.append(i+"\n");
-                    returned.append(elements.get(i).getHref()+"\n");
-                    returned.append(elements.get(i).getSrc()+"\n");
-                    returned.append(elements.get(i).getAlt()+"\n");
-                    returned.append(elements.get(i).getDate()+"\n");
-                    returned.append(elements.get(i).getTheme()+"\n");
-                }
 
-                return(returned.toString());*/
+            }
+            catch (Exception exept)
+            {
+                return null;
             }
             finally {
                 if (reader != null) {
@@ -160,23 +164,9 @@ public class ProgressFragment extends Fragment {
                 Matcher matcherTheme = patternTheme.matcher(whatWeFind);
 
                 if (matcherHref.find() && matcherSrc.find() && matcherAlt.find() && matcherDate.find() && matcherTheme.find()){
+                    result.add(new Element(matcherHref.group().substring(6), matcherSrc.group().substring(5), matcherAlt.group().substring(5),
+                            matcherDate.group().substring(6), matcherTheme.group().substring(28)));
 
-
-                    StringBuilder href = new StringBuilder();
-                    href.append(" http://bsuir.by");
-                    href.append( matcherSrc.group().substring(5));
-                    Bitmap Icon = null;
-                    try {
-                        URL newurl = new URL(href.toString());
-                        Icon = BitmapFactory.decodeStream(newurl.openConnection() .getInputStream());
-
-                    } catch (Exception e) {
-
-                    }
-                    Element temp = new Element(matcherHref.group().substring(6), matcherSrc.group().substring(5), matcherAlt.group().substring(5),
-                            matcherDate.group().substring(6), matcherTheme.group().substring(28));
-                    temp.setImage(Icon);
-                    result.add(temp);
                 }
             }
             return result;
