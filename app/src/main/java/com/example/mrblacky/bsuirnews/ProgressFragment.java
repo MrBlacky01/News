@@ -83,25 +83,35 @@ public class ProgressFragment extends Fragment {
             try{
 
                 content = getContent("http://bsuir.by");
+                return content;
             }
             catch (IOException ex){
-                Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+                return new ArrayList<>();
             }
 
-            return content;
+
         }
         @Override
         protected void onProgressUpdate(Void... items) {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Element> content) {
+        protected void onPostExecute(ArrayList<Element> content)  {
 
-            RVAdapter adapter = new RVAdapter(content);
-            rv.setAdapter(adapter);
-           // contentText=content;
-           // contentView.setText(content);
-            Toast.makeText(getActivity(), "Данные загружены", Toast.LENGTH_SHORT).show();
+            if (content.size()!=0)
+            {
+                RVAdapter adapter = new RVAdapter(content);
+                rv.setAdapter(adapter);
+                // contentText=content;
+                // contentView.setText(content);
+                Toast.makeText(getActivity(), "Данные загружены", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(getActivity(), "Ошибка соединения, включите интернет и попробуйте зайти снова", Toast.LENGTH_SHORT).show();
+
+            }
         }
 
         private ArrayList<Element> getContent(String path) throws IOException {
@@ -134,7 +144,7 @@ public class ProgressFragment extends Fragment {
             }
             catch (Exception exept)
             {
-                return null;
+                throw new IOException();
             }
             finally {
                 if (reader != null) {
