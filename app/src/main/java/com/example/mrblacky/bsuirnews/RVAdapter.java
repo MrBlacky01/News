@@ -39,6 +39,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
         ElementViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
+            cv.setPreventCornerOverlap(false);
 
             newsDate = (TextView)itemView.findViewById(R.id.news_date);
             newsName = (TextView)itemView.findViewById(R.id.news_name);
@@ -86,7 +87,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
        // elementViewHolder.newsPhoto.setImageResource(R.mipmap.ic_launcher);
 
         try {
-            Picasso.with(elementViewHolder.newsPhoto.getContext()).load("http://bsuir.by"+news.get(i).getSrc()).into(elementViewHolder.newsPhoto);
+            Picasso.with(elementViewHolder.newsPhoto.getContext()).load("http://bsuir.by"+news.get(i).getSrc())
+                    .placeholder(R.drawable.vasilec).into(elementViewHolder.newsPhoto);
         }
         catch (Exception exept)
         {
