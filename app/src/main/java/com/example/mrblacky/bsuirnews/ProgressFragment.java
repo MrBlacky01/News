@@ -106,10 +106,14 @@ public class ProgressFragment extends Fragment {
                 // contentText=content;
                 // contentView.setText(content);
                 Toast.makeText(getActivity(), "Данные загружены", Toast.LENGTH_SHORT).show();
+                TextView textView = (TextView)getActivity().findViewById(R.id.content);
+                textView.setText("");
             }
             else
             {
                 Toast.makeText(getActivity(), "Ошибка соединения, включите интернет и попробуйте зайти снова", Toast.LENGTH_SHORT).show();
+                TextView temp = (TextView) getActivity().findViewById(R.id.content);
+                temp.setText("Ошибка соединения, включите интернет и попробуйте зайти снова");
 
             }
         }
