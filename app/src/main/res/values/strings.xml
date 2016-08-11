@@ -4,12 +4,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="bsuir_site">http://bsuir.by</string>
-    <string name="rubric_achivements">Достижения</string>
-    <string name="rubric_education">Образование</string>
-    <string name="rubric_csiense">Наука</string>
-    <string name="rubric_cooperation">Сотрудничество</string>
-    <string name="rubric_society">Общество</string>
-    <string name="rubric_sport">Спорт и досуг</string>
+    <string-array name="navigation_drawer_array">
+        <item>Достижения</item>
+        <item>Образование</item>
+        <item>Наука</item>
+        <item>Сотрудничество</item>
+        <item>Общество</item>
+        <item>Спорт и досуг</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
     <string name="downloading_text">Загрузка данных...</string>
 
 </resources>
