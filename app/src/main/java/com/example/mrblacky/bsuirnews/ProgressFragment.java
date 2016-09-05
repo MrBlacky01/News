@@ -3,11 +3,6 @@ package com.example.mrblacky.bsuirnews;
 /**
  * Created by Mr.Blacky on 25.07.2016.
  */
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,12 +16,9 @@ import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -79,10 +71,10 @@ public class ProgressFragment extends Fragment {
         @Override
         protected ArrayList<Element> doInBackground(String... path) {
 
-            ArrayList<Element> content = null;
+            ArrayList<Element> content;
             try{
 
-                content = getContent("http://bsuir.by");
+                content = getContent();
                 return content;
             }
             catch (IOException ex){
@@ -118,22 +110,22 @@ public class ProgressFragment extends Fragment {
             }
         }
 
-        private ArrayList<Element> getContent(String path) throws IOException {
+        private ArrayList<Element> getContent() throws IOException {
             BufferedReader reader=null;
             try {
-                URL url=new URL(path);
+                URL url=new URL(getResources().getString(R.string.bsuir_site));
                 HttpURLConnection urlConnection =(HttpURLConnection)url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
 
                 reader= new BufferedReader(new InputStreamReader(urlConnection.getInputStream(),"cp1251"));
                 StringBuilder buf=new StringBuilder();
-                String line=null;
+                String line;
                 while ((line=reader.readLine()) != null) {
-                    buf.append(line + "\n");
+                    buf.append(line).append("\n");
                 }
 
-                ArrayList<Element> elements = new ArrayList<>();
+                ArrayList<Element> elements;
                 elements = findElements(buf.toString());
                 if (elements.size()== 0 )
                 {
@@ -169,7 +161,7 @@ public class ProgressFragment extends Fragment {
             Pattern patternMain = Pattern.compile("((<div class=\"item\".*>[.\\s]*<div class=\"img\".*>[\\S\\s]*?<\\/span>))");
             Matcher matcherMain = patternMain.matcher(text);
             while (matcherMain.find()){
-                String whatWeFind = matcherMain.group().toString();
+                String whatWeFind = matcherMain.group();
 
                 Matcher matcherHref = patternHref.matcher(whatWeFind);
                 Matcher matcherSrc = patternSrc.matcher(whatWeFind);

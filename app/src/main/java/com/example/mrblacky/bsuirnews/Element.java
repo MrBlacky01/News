@@ -1,11 +1,9 @@
 package com.example.mrblacky.bsuirnews;
 
-import android.graphics.Bitmap;
-
 /**
  * Created by Mr.Blacky on 25.07.2016.
  */
-public class Element {
+class Element {
     private String href;
     private String src;
     private String alt;
