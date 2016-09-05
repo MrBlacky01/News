@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
 
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <fragment android:id="@+id/contentFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.example.mrblacky.bsuirnews.ProgressFragment" />
-    </FrameLayout>
-
     <LinearLayout
-        android:id="@+id/NDLayout"
-        android:layout_width="240dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff">
+        android:orientation="vertical">
 
-        <ListView
-            android:id="@+id/left_drawer"
+        <include
+            layout="@layout/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/holo_purple"
-            android:dividerHeight="0dp"
-            android:background="@color/list_background"
-        />
+            android:layout_height="wrap_content" />
 
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment android:id="@+id/contentFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.example.mrblacky.bsuirnews.ProgressFragment" />
+        </FrameLayout>
     </LinearLayout>
 
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nvView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white"
+        app:menu="@menu/drawer_view"
+        app:headerLayout="@layout/nav_header"
+    />
 
 </android.support.v4.widget.DrawerLayout>

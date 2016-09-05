@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black"
+            android:title="Главная" />
+
+        <item android:title="Новости">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_achivement"
+                        android:icon="@drawable/ic_star_black"
+                        android:title="Достижения" />
+                    <item
+                        android:id="@+id/nav_education"
+                        android:icon="@drawable/ic_school_black"
+                        android:title="Образование" /> />
+                    <item
+                        android:id="@+id/nav_science"
+                        android:icon="@drawable/ic_library_black"
+                        android:title="Наука" />
+                    <item
+                        android:id="@+id/nav_entership"
+                        android:icon="@drawable/ic_language_black"
+                        android:title="Сотрудничество" />
+                    <item
+                        android:id="@+id/nav_society"
+                        android:icon="@drawable/ic_group_black"
+                        android:title="Общество" />
+                    <item
+                        android:id="@+id/nav_sport"
+                        android:icon="@drawable/ic_pool_black"
+                        android:title="Спорт и досуг" />
+
+                </group>
+            </menu>
+        </item>
+    </group>
+</menu>
