@@ -3,5 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.mrblacky.bsuirnew.MainActivity" >
-
+    <item
+        android:id="@+id/toolbar_home"
+        android:icon="@drawable/ic_home_white"
+        app:showAsAction="ifRoom"
+        android:title="@string/home_click">
+    </item>
 </menu>
