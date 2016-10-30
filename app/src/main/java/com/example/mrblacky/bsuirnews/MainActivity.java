@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
+    private int state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +33,10 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = setupDrawerToggle();
-
         mDrawer.addDrawerListener(drawerToggle);
+
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        setupDrawerContent(nvDrawer);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.contentFragment);
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.contentFragment, fragment)
                     .commit();
         }
+        state = R.id.nav_home;
 
     }
 
@@ -59,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // `onPostCreate` called when activity start-up is complete after `onStart()`
-    // NOTE! Make sure to override the method with only a single `Bundle` argument
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -79,5 +82,76 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        int ItemId = menuItem.getItemId();
+        if (ItemId != state){
+            Fragment fragment = null;
+            state = ItemId;
+            Class fragmentClass;
+            Bundle extras = new Bundle();
+            switch(menuItem.getItemId()) {
+                case R.id.nav_home:
+                    fragmentClass = ProgressFragment.class;
+                    break;
+                case R.id.nav_achivement:
+                    extras.putString("From","From achivement");
+                    fragmentClass = ThemeNewsFragment.class;
+                    break;
+                case R.id.nav_education:
+                    extras.putString("From","From education");
+                    fragmentClass = ThemeNewsFragment.class;
+                    break;
+                case R.id.nav_science:
+                    extras.putString("From","From science");
+                    fragmentClass = ThemeNewsFragment.class;
+                    break;
+                case R.id.nav_entership:
+                    extras.putString("From","From entership");
+                    fragmentClass = ThemeNewsFragment.class;
+                    break;
+                case R.id.nav_society:
+                    extras.putString("From","From society");
+                    fragmentClass = ThemeNewsFragment.class;
+                    break;
+                case R.id.nav_sport:
+                    extras.putString("From","From sport");
+                    fragmentClass = ThemeNewsFragment.class;
+                    break;
+                default:
+                    fragmentClass = ProgressFragment.class;
+            }
+
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            fragment.setArguments(extras);
+            // Insert the fragment by replacing any existing fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.contentFragment, fragment).commit();
+
+            // Highlight the selected item has been done by NavigationView
+            menuItem.setChecked(true);
+            // Set action bar title
+            setTitle(menuItem.getTitle());
+            // Close the navigation drawer
+            mDrawer.closeDrawers();
+        }
     }
 }
