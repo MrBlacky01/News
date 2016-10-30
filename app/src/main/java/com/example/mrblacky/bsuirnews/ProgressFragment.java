@@ -160,11 +160,27 @@ public class ProgressFragment extends Fragment {
                 Matcher matcherTheme = patternTheme.matcher(whatWeFind);
 
                 if (matcherHref.find() && matcherSrc.find() && matcherAlt.find() && matcherDate.find() && matcherTheme.find()) {
-                    result.add(new ShortNewsFromMainPage(matcherHref.group().substring(6), matcherSrc.group().substring(5), matcherAlt.group().substring(5),
-                            matcherDate.group().substring(6), matcherTheme.group().substring(28)));
+                    result.add(new ShortNewsFromMainPage(matcherHref.group().substring(6),
+                            matcherSrc.group().substring(5),
+                            CheckAlt(matcherAlt.group().substring(5)),
+                            matcherDate.group().substring(6),
+                            matcherTheme.group().substring(28))
+                            );
                 }
             }
             return result;
+        }
+
+        private String CheckAlt(String alt){
+            while ((alt.contains("&laquo;"))||(alt.contains("&raquo;"))){
+                if(alt.contains("&laquo;")){
+                    alt = alt.replace("&laquo;","\u00AB");
+                }
+                else{
+                    alt = alt.replace("&raquo;","\u00BB");
+                }
+            }
+            return alt;
         }
 
     }
