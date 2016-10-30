@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.contentFragment, fragment)
                     .commit();
         }
+        nvDrawer.getMenu().getItem(0).setChecked(true);
         state = R.id.nav_home;
 
     }
@@ -58,6 +59,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+        if((item.getItemId() == R.id.toolbar_home)&&(state != R.id.nav_home) ) {
+            state = R.id.nav_home;
+            Fragment fragment = null;
+            Class fragmentClass = ProgressFragment.class;
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.contentFragment, fragment).commit();
+            setTitle("Новости БГУИР");
+            nvDrawer.setCheckedItem(R.id.nav_home);
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -149,7 +165,13 @@ public class MainActivity extends AppCompatActivity {
             // Highlight the selected item has been done by NavigationView
             menuItem.setChecked(true);
             // Set action bar title
-            setTitle(menuItem.getTitle());
+            if(menuItem.getItemId() == R.id.nav_home) {
+                setTitle("Новости БГУИР");
+            }
+            else {
+                setTitle(menuItem.getTitle());
+            }
+
             // Close the navigation drawer
             mDrawer.closeDrawers();
         }
