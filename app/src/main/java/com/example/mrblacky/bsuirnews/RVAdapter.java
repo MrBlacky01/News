@@ -26,11 +26,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
         final TextView newsTag;
         final ImageView newsPhoto;
         String href;
+        Context context;
 
-        ElementViewHolder(View itemView) {
+        ElementViewHolder(final Context context, View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
             cv.setPreventCornerOverlap(false);
+            this.context = context;
 
             newsDate = (TextView)itemView.findViewById(R.id.news_date);
             newsName = (TextView)itemView.findViewById(R.id.news_name);
@@ -43,7 +45,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
                     //...
                     Toast.makeText(v.getContext(), href, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(v.getContext(), WebResourse.class);
-                    intent.putExtra("HrefValue","https://www.bsuir.by" + href);
+                    intent.putExtra("HrefValue",context.getResources().getString(R.string.bsuir_site) + href);
                     v.getContext().startActivity(intent);
 
                 }
@@ -51,11 +53,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
         }
     }
 
+    Context MainContext;
     private final List<ShortNewsFromMainPage> news;
     AdapterView.OnItemClickListener mItemClickListener;
 
-    RVAdapter(List<ShortNewsFromMainPage> news){
+    RVAdapter(Context context, List<ShortNewsFromMainPage> news){
         this.news = news;
+        this.MainContext = context;
     }
 
     @Override
@@ -67,7 +71,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
     public ElementViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
 
-        return new ElementViewHolder(v);
+        return new ElementViewHolder(MainContext, v);
     }
 
     @Override
@@ -77,7 +81,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
         elementViewHolder.newsTag.setText(news.get(i).getTheme());
 
         try {
-            Picasso.with(elementViewHolder.newsPhoto.getContext()).load("https://www.bsuir.by" + news.get(i).getSrc())
+            Picasso.with(elementViewHolder.newsPhoto.getContext())
+                    .load(MainContext.getResources().getString(R.string.bsuir_site) + news.get(i).getSrc())
                     .placeholder(R.drawable.vasilec).into(elementViewHolder.newsPhoto);
         }
         catch (Exception exept)

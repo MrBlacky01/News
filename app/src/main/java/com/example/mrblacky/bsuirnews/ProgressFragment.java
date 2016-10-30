@@ -1,5 +1,6 @@
 package com.example.mrblacky.bsuirnews;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -87,7 +88,7 @@ public class ProgressFragment extends Fragment {
 
             if (content != null && content.size()!=0) {
 
-                RVAdapter adapter = new RVAdapter(content);
+                RVAdapter adapter = new RVAdapter(getContext(),content);
                 rv.setAdapter(adapter);
                 // contentText=content;
                 // contentView.setText(content);
