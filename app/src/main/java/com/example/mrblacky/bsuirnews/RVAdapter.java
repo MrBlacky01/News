@@ -1,5 +1,6 @@
 package com.example.mrblacky.bsuirnews;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +43,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
                     //...
                     Toast.makeText(v.getContext(), href, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(v.getContext(), WebResourse.class);
-                    intent.putExtra("HrefValue","http://bsuir.by"+href);
+                    intent.putExtra("HrefValue","https://www.bsuir.by" + href);
                     v.getContext().startActivity(intent);
 
                 }
@@ -74,10 +75,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
         elementViewHolder.newsDate.setText(news.get(i).getDate());
         elementViewHolder.newsName.setText(news.get(i).getAlt());
         elementViewHolder.newsTag.setText(news.get(i).getTheme());
-       // elementViewHolder.newsPhoto.setImageResource(R.mipmap.ic_launcher);
 
         try {
-            Picasso.with(elementViewHolder.newsPhoto.getContext()).load("http://bsuir.by"+news.get(i).getSrc())
+            Picasso.with(elementViewHolder.newsPhoto.getContext()).load("https://www.bsuir.by" + news.get(i).getSrc())
                     .placeholder(R.drawable.vasilec).into(elementViewHolder.newsPhoto);
         }
         catch (Exception exept)
@@ -85,7 +85,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
 
         }
         elementViewHolder.href=news.get(i).getHref();
-        //elementViewHolder.newsPhoto.setImageBitmap(news.get(i).getImage());
     }
 
     @Override
