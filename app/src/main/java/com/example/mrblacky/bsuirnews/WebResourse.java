@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-public class WebResourse extends AppCompatActivity {
+public class  WebResourse extends AppCompatActivity {
 
     private WebView browser;
 

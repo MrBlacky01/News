@@ -1,8 +1,5 @@
 package com.example.mrblacky.bsuirnews;
 
-/**
- * Created by Mr.Blacky on 27.07.2016.
- */
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +14,6 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder> {
 
@@ -54,10 +50,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ElementViewHolder>
         }
     }
 
-    private final List<Element> news;
+    private final List<ShortNewsFromMainPage> news;
     AdapterView.OnItemClickListener mItemClickListener;
 
-    RVAdapter(List<Element> news){
+    RVAdapter(List<ShortNewsFromMainPage> news){
         this.news = news;
     }
 

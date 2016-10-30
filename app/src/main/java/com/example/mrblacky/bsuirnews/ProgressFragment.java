@@ -1,10 +1,8 @@
 package com.example.mrblacky.bsuirnews;
 
-/**
- * Created by Mr.Blacky on 25.07.2016.
- */
 import android.os.Bundle;
-import android.app.Fragment;
+
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,15 +24,13 @@ import java.util.regex.Pattern;
 
 public class ProgressFragment extends Fragment {
 
-    private List<Element> news;
+    private List<ShortNewsFromMainPage> news;
     private RecyclerView rv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-
     }
 
     @Override
@@ -61,38 +57,36 @@ public class ProgressFragment extends Fragment {
 
         if(this.news==null) {
                 new ProgressTask().execute();
-
         }
-
     }
 
-    class ProgressTask extends AsyncTask<String, Void, ArrayList<Element>> {
+    class ProgressTask extends AsyncTask<String, Void, ArrayList<ShortNewsFromMainPage>> {
 
         @Override
-        protected ArrayList<Element> doInBackground(String... path) {
+        protected ArrayList<ShortNewsFromMainPage> doInBackground(String... path) {
 
-            ArrayList<Element> content;
-            try{
+            ArrayList<ShortNewsFromMainPage> content;
+            try {
 
                 content = getContent();
                 return content;
             }
-            catch (IOException ex){
+            catch (IOException ex) {
+
                // Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
                 return new ArrayList<>();
             }
-
-
         }
+
         @Override
         protected void onProgressUpdate(Void... items) {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Element> content)  {
+        protected void onPostExecute(ArrayList<ShortNewsFromMainPage> content)  {
 
-            if (content.size()!=0)
-            {
+            if (content != null && content.size()!=0) {
+
                 RVAdapter adapter = new RVAdapter(content);
                 rv.setAdapter(adapter);
                 // contentText=content;
@@ -101,8 +95,8 @@ public class ProgressFragment extends Fragment {
                 TextView textView = (TextView)getActivity().findViewById(R.id.content);
                 textView.setText("");
             }
-            else
-            {
+            else {
+
                 Toast.makeText(getActivity(), "Ошибка соединения, включите интернет и попробуйте зайти снова", Toast.LENGTH_SHORT).show();
                 TextView temp = (TextView) getActivity().findViewById(R.id.content);
                 temp.setText("Ошибка соединения, включите интернет и попробуйте зайти снова");
@@ -110,7 +104,7 @@ public class ProgressFragment extends Fragment {
             }
         }
 
-        private ArrayList<Element> getContent() throws IOException {
+        private ArrayList<ShortNewsFromMainPage> getContent() throws IOException {
             BufferedReader reader=null;
             try {
                 URL url=new URL(getResources().getString(R.string.bsuir_site));
@@ -125,21 +119,17 @@ public class ProgressFragment extends Fragment {
                     buf.append(line).append("\n");
                 }
 
-                ArrayList<Element> elements;
+                ArrayList<ShortNewsFromMainPage> elements;
                 elements = findElements(buf.toString());
-                if (elements.size()== 0 )
-                {
+
+                if (elements.size()== 0 ) {
                     return null;
                 }
-                else
-                {
+                else {
                     return elements;
                 }
-
-
             }
-            catch (Exception exept)
-            {
+            catch (Exception exept) {
                 throw new IOException();
             }
             finally {
@@ -150,7 +140,7 @@ public class ProgressFragment extends Fragment {
         }
 
         private  ArrayList findElements(String text){
-            ArrayList <Element> result = new ArrayList<>();
+            ArrayList <ShortNewsFromMainPage> result = new ArrayList<>();
 
             Pattern patternHref = Pattern.compile("(href=\")[^\"]*");
             Pattern patternSrc = Pattern.compile("(src=\")[^\"]*");
@@ -169,10 +159,9 @@ public class ProgressFragment extends Fragment {
                 Matcher matcherDate = patternDate.matcher(whatWeFind);
                 Matcher matcherTheme = patternTheme.matcher(whatWeFind);
 
-                if (matcherHref.find() && matcherSrc.find() && matcherAlt.find() && matcherDate.find() && matcherTheme.find()){
-                    result.add(new Element(matcherHref.group().substring(6), matcherSrc.group().substring(5), matcherAlt.group().substring(5),
+                if (matcherHref.find() && matcherSrc.find() && matcherAlt.find() && matcherDate.find() && matcherTheme.find()) {
+                    result.add(new ShortNewsFromMainPage(matcherHref.group().substring(6), matcherSrc.group().substring(5), matcherAlt.group().substring(5),
                             matcherDate.group().substring(6), matcherTheme.group().substring(28)));
-
                 }
             }
             return result;

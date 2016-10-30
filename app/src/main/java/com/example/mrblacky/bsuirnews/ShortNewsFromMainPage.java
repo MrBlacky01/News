@@ -1,16 +1,13 @@
 package com.example.mrblacky.bsuirnews;
 
-/**
- * Created by Mr.Blacky on 25.07.2016.
- */
-class Element {
+class ShortNewsFromMainPage {
     private String href;
     private String src;
     private String alt;
     private String date;
     private String theme;
 
-    Element(){
+    ShortNewsFromMainPage(){
         href = "null";
         src = "null";
         alt = "null";
@@ -18,7 +15,7 @@ class Element {
         theme = "null";
     }
 
-    Element(String h, String s, String a, String date,String t){
+    ShortNewsFromMainPage(String h, String s, String a, String date,String t){
         href = h;
         src = s;
         alt = a;

@@ -3,6 +3,8 @@ package com.example.mrblacky.bsuirnews;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,8 +33,16 @@ public class MainActivity extends AppCompatActivity {
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = setupDrawerToggle();
 
-        // Tie DrawerLayout events to the ActionBarToggle
         mDrawer.addDrawerListener(drawerToggle);
+
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.contentFragment);
+        if (fragment == null) {
+            fragment = new ProgressFragment();
+            fm.beginTransaction()
+                    .add(R.id.contentFragment, fragment)
+                    .commit();
+        }
 
     }
 
@@ -47,10 +57,9 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     // `onPostCreate` called when activity start-up is complete after `onStart()`
     // NOTE! Make sure to override the method with only a single `Bundle` argument
-
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
