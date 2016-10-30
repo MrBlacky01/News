@@ -15,12 +15,12 @@ class ShortNewsFromMainPage {
         theme = "null";
     }
 
-    ShortNewsFromMainPage(String h, String s, String a, String date,String t){
-        href = h;
-        src = s;
-        alt = a;
+    ShortNewsFromMainPage(String href, String src, String alt, String date,String theme){
+        this.href = href;
+        this.src = src;
+        this.alt = alt;
         this.date = date;
-        theme = t;
+        this.theme = theme;
     }
 
     String getHref(){
