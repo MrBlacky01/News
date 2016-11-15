@@ -1,4 +1,4 @@
-package com.example.mrblacky.bsuirnews;
+package com.corp.mrblacky.bsuirnews;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -24,35 +24,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(com.corp.mrblacky.bsuirnews.R.layout.activity_main);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(com.corp.mrblacky.bsuirnews.R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawer = (DrawerLayout) findViewById(com.corp.mrblacky.bsuirnews.R.id.drawer_layout);
         drawerToggle = setupDrawerToggle();
         mDrawer.addDrawerListener(drawerToggle);
 
-        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        nvDrawer = (NavigationView) findViewById(com.corp.mrblacky.bsuirnews.R.id.nvView);
         setupDrawerContent(nvDrawer);
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.contentFragment);
+        Fragment fragment = fm.findFragmentById(com.corp.mrblacky.bsuirnews.R.id.contentFragment);
         if (fragment == null) {
             fragment = new ProgressFragment();
             fm.beginTransaction()
-                    .add(R.id.contentFragment, fragment)
+                    .add(com.corp.mrblacky.bsuirnews.R.id.contentFragment, fragment)
                     .commit();
         }
         nvDrawer.getMenu().getItem(0).setChecked(true);
-        state = R.id.nav_home;
+        state = com.corp.mrblacky.bsuirnews.R.id.nav_home;
 
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
-        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, com.corp.mrblacky.bsuirnews.R.string.drawer_open,  com.corp.mrblacky.bsuirnews.R.string.drawer_close);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        if((item.getItemId() == R.id.toolbar_home)&&(state != R.id.nav_home) ) {
-            state = R.id.nav_home;
+        if((item.getItemId() == com.corp.mrblacky.bsuirnews.R.id.toolbar_home)&&(state != com.corp.mrblacky.bsuirnews.R.id.nav_home) ) {
+            state = com.corp.mrblacky.bsuirnews.R.id.nav_home;
             Fragment fragment = null;
             Class fragmentClass = ProgressFragment.class;
             try {
@@ -70,12 +70,19 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.contentFragment, fragment).commit();
+            fragmentManager.beginTransaction().replace(com.corp.mrblacky.bsuirnews.R.id.contentFragment, fragment).addToBackStack(null).commit();
             setTitle("Новости БГУИР");
-            nvDrawer.setCheckedItem(R.id.nav_home);
+            nvDrawer.setCheckedItem(com.corp.mrblacky.bsuirnews.R.id.nav_home);
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed(){
+
+
+        super.onBackPressed();
     }
 
     // `onPostCreate` called when activity start-up is complete after `onStart()`
@@ -96,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(com.corp.mrblacky.bsuirnews.R.menu.main, menu);
         return true;
     }
 
@@ -111,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    public void selectDrawerItem(MenuItem menuItem) {
+    public void selectDrawerItem(final MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         int ItemId = menuItem.getItemId();
         if (ItemId != state){
@@ -120,31 +127,31 @@ public class MainActivity extends AppCompatActivity {
             Class fragmentClass;
             Bundle extras = new Bundle();
             switch(menuItem.getItemId()) {
-                case R.id.nav_home:
+                case com.corp.mrblacky.bsuirnews.R.id.nav_home:
                     fragmentClass = ProgressFragment.class;
                     break;
-                case R.id.nav_achivement:
-                    extras.putString("From","From achivement");
+                case com.corp.mrblacky.bsuirnews.R.id.nav_achivement:
+                    extras.putString("From","achievements");
                     fragmentClass = ThemeNewsFragment.class;
                     break;
-                case R.id.nav_education:
-                    extras.putString("From","From education");
+                case com.corp.mrblacky.bsuirnews.R.id.nav_education:
+                    extras.putString("From","education");
                     fragmentClass = ThemeNewsFragment.class;
                     break;
-                case R.id.nav_science:
-                    extras.putString("From","From science");
+                case com.corp.mrblacky.bsuirnews.R.id.nav_science:
+                    extras.putString("From","science");
                     fragmentClass = ThemeNewsFragment.class;
                     break;
-                case R.id.nav_entership:
-                    extras.putString("From","From entership");
+                case com.corp.mrblacky.bsuirnews.R.id.nav_entership:
+                    extras.putString("From","cooperation");
                     fragmentClass = ThemeNewsFragment.class;
                     break;
-                case R.id.nav_society:
-                    extras.putString("From","From society");
+                case com.corp.mrblacky.bsuirnews.R.id.nav_society:
+                    extras.putString("From","society");
                     fragmentClass = ThemeNewsFragment.class;
                     break;
-                case R.id.nav_sport:
-                    extras.putString("From","From sport");
+                case com.corp.mrblacky.bsuirnews.R.id.nav_sport:
+                    extras.putString("From","sport");
                     fragmentClass = ThemeNewsFragment.class;
                     break;
                 default:
@@ -160,12 +167,16 @@ public class MainActivity extends AppCompatActivity {
             fragment.setArguments(extras);
             // Insert the fragment by replacing any existing fragment
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.contentFragment, fragment).commit();
+            fragmentManager.beginTransaction().
+                    replace(com.corp.mrblacky.bsuirnews.R.id.contentFragment, fragment).
+                    addToBackStack(null).
+                    commit();
+
 
             // Highlight the selected item has been done by NavigationView
             menuItem.setChecked(true);
             // Set action bar title
-            if(menuItem.getItemId() == R.id.nav_home) {
+            if(menuItem.getItemId() == com.corp.mrblacky.bsuirnews.R.id.nav_home) {
                 setTitle("Новости БГУИР");
             }
             else {

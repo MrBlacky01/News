@@ -1,4 +1,4 @@
-package com.example.mrblacky.bsuirnews;
+package com.corp.mrblacky.bsuirnews;
 
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +13,13 @@ public class  WebResourse extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_web_resourse);
+        setContentView(com.corp.mrblacky.bsuirnews.R.layout.activity_web_resourse);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String product = extras.getString("HrefValue");
             //TextView tv = (TextView) findViewById(R.id.href);
             //tv.setText(product  );
-            browser=(WebView)findViewById(R.id.webBrowser);
+            browser=(WebView)findViewById(com.corp.mrblacky.bsuirnews.R.id.webBrowser);
             browser.setWebViewClient(new WebViewClientForDoPage());
 
             browser.getSettings().setBuiltInZoomControls(true);

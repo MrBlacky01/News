@@ -1,4 +1,4 @@
-package com.example.mrblacky.bsuirnews;
+package com.corp.mrblacky.bsuirnews;
 
 class ShortNewsFromMainPage {
     private String href;

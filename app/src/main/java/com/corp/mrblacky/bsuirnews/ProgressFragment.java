@@ -1,6 +1,5 @@
-package com.example.mrblacky.bsuirnews;
+package com.corp.mrblacky.bsuirnews;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -37,16 +36,14 @@ public class ProgressFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_progress, container, false);
+        View view = inflater.inflate(com.corp.mrblacky.bsuirnews.R.layout.fragment_progress, container, false);
 
-        rv=(RecyclerView)view.findViewById(R.id.rv);
+        rv=(RecyclerView)view.findViewById(com.corp.mrblacky.bsuirnews.R.id.rv);
 
         LinearLayoutManager llm = new LinearLayoutManager(inflater.getContext());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
-        //contentView = (TextView) view.findViewById(R.id.content);
-        //if(contentText!=null)
-         //   contentView.setText(contentText);
+
         return view;
     }
 
@@ -61,7 +58,7 @@ public class ProgressFragment extends Fragment {
         }
     }
 
-    class ProgressTask extends AsyncTask<String, Void, ArrayList<ShortNewsFromMainPage>> {
+    private class ProgressTask extends AsyncTask<String, Void, ArrayList<ShortNewsFromMainPage>> {
 
         @Override
         protected ArrayList<ShortNewsFromMainPage> doInBackground(String... path) {
@@ -73,8 +70,6 @@ public class ProgressFragment extends Fragment {
                 return content;
             }
             catch (IOException ex) {
-
-               // Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
                 return new ArrayList<>();
             }
         }
@@ -86,29 +81,31 @@ public class ProgressFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<ShortNewsFromMainPage> content)  {
 
-            if (content != null && content.size()!=0) {
+            Fragment tempf = (Fragment) getFragmentManager().findFragmentById(com.corp.mrblacky.bsuirnews.R.id.contentFragment);
+            if (tempf instanceof ProgressFragment) {
+                if (content != null && content.size() != 0) {
 
-                RVAdapter adapter = new RVAdapter(getContext(),content);
-                rv.setAdapter(adapter);
-                // contentText=content;
-                // contentView.setText(content);
-                Toast.makeText(getActivity(), "Данные загружены", Toast.LENGTH_SHORT).show();
-                TextView textView = (TextView)getActivity().findViewById(R.id.content);
-                textView.setText("");
-            }
-            else {
+                    RVAdapter adapter = new RVAdapter(getContext(), content);
+                    rv.setAdapter(adapter);
+                    // contentText=content;
+                    // contentView.setText(content);
+                    Toast.makeText(getActivity(), "Данные загружены", Toast.LENGTH_SHORT).show();
+                    TextView textView = (TextView) getActivity().findViewById(com.corp.mrblacky.bsuirnews.R.id.content);
+                    textView.setText("");
+                } else {
 
-                Toast.makeText(getActivity(), "Ошибка соединения, включите интернет и попробуйте зайти снова", Toast.LENGTH_SHORT).show();
-                TextView temp = (TextView) getActivity().findViewById(R.id.content);
-                temp.setText("Ошибка соединения, включите интернет и попробуйте зайти снова");
+                    Toast.makeText(getActivity(), "Ошибка соединения, включите интернет и попробуйте зайти снова", Toast.LENGTH_SHORT).show();
+                    TextView temp = (TextView) getActivity().findViewById(com.corp.mrblacky.bsuirnews.R.id.content);
+                    temp.setText("Ошибка соединения, включите интернет и попробуйте зайти снова");
 
+                }
             }
         }
 
         private ArrayList<ShortNewsFromMainPage> getContent() throws IOException {
             BufferedReader reader=null;
             try {
-                URL url=new URL(getResources().getString(R.string.bsuir_site));
+                URL url=new URL(getResources().getString(com.corp.mrblacky.bsuirnews.R.string.bsuir_site));
                 HttpURLConnection urlConnection =(HttpURLConnection)url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -122,7 +119,7 @@ public class ProgressFragment extends Fragment {
 
                 ArrayList<ShortNewsFromMainPage> elements;
                 elements = findElements(buf.toString());
-
+                buf.delete(0,buf.length());
                 if (elements.size()== 0 ) {
                     return null;
                 }

@@ -1,4 +1,4 @@
-package com.example.mrblacky.bsuirnews;
+package com.corp.mrblacky.bsuirnews;
 
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
